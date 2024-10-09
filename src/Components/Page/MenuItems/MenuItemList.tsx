@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from "react";
 import { menuItemModel } from '../../../Interfaces';
+import MenuItemCard from './MenuItemCard';
 
  function MenuItemList() {
 
@@ -8,18 +9,10 @@ import { menuItemModel } from '../../../Interfaces';
 
   useEffect(() => {
     fetch("https://foodserviceapi20241002165531.azurewebsites.net/api/MenuItem")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
+      .then((response)=> response.json())
       .then((data) => {
         console.log(data);
-        setMenuItems(data.result); 
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
+        setMenuItems(data);
       });
   }, []);
 
@@ -27,8 +20,14 @@ import { menuItemModel } from '../../../Interfaces';
 
 
   return (
-    <div>MenuItemList</div>
-  )
+    <div className="container row">
+      {menuItems.length>0 && 
+      menuItems.map((menuItem, index)=> (
+        <MenuItemCard menuItem={menuItem} key={index} />
+      ))}
+      
+      </div>
+  );
 }
 
 
